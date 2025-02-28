@@ -1,0 +1,48 @@
+@font-face {
+    font-family: "CustomFont";
+    src: url("../public/Valorant.ttf") format("truetype"); /* Ensure path is correct */
+  }
+
+.home-container {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+/* Title Styling */
+.home-title {
+    font-family: "CustomFont", sans-serif; /* Fix the 'font' property */
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 10px rgba(0, 255, 255, 0.7);
+  }
+
+/* Grid for Workshop Links */
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Button Styling */
+.workshop-button {
+  display: block;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.workshop-button:hover {
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+  border-color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(59, 130, 246, 0.6);
+}

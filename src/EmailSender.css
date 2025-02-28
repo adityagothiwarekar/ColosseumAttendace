@@ -1,0 +1,59 @@
+/* Styling for EmailSender Component */
+@font-face {
+    font-family: "CustomFont";
+    src: url("../public/Valorant.ttf") format("truetype"); /* Ensure path is correct */
+  }
+
+.email-sender-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.email-sender-title {
+    font-family: "CustomFont", sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 10px rgba(0, 255, 255, 0.7);
+}
+
+.file-input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.send-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1rem;
+    display: block;  /* Ensure it appears as a block element */
+    margin: 10px auto;
+}
+
+.send-button:hover {
+    background-color: #218838;
+}
+
+.success-message {
+    margin-top: 10px; /* Ensure spacing below the button */
+    font-size: 1rem;
+    color: #155724;
+    background-color: #d4edda;
+    padding: 10px;
+    border-radius: 5px;
+    display: block; /* Make sure it appears below */
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
