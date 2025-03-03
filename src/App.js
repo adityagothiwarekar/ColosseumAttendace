@@ -14,6 +14,7 @@ import SuryaTalk from "./SuryaTalk.js";
 import VineetTalk from "./VineetTalk.js";
 import MayankTalk from "./MayankTalk.js";
 import PiyushTalk from "./Standup.js";
+// import ColoNite from "./ColoNite.js";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -89,6 +90,7 @@ const App = () => {
             <Route path="/ffsdfsdwSuryaasdasdas" element={<SuryaTalk />} />
             <Route path="/asdwVineetsd" element={<VineetTalk />} />
             <Route path="/asdeasdaPiyushwesdasd" element={<PiyushTalk />} />
+            {/* <Route path="/asadasaColoNiteasawad" element={<ColoNite />} /> */}
           </Routes>
         </Router>
       )}

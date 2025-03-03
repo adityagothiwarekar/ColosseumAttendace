@@ -7,6 +7,7 @@ import "./EmailSender.css"; // Ensure styling applies to this page as well
 const CSI = () => {
   const [entries, setEntries] = useState([]);
   const [verifiedEntries, setVerifiedEntries] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(""); // Define successMessage state
   const workshopName = "CSI Workshop";
 
   const getLastProcessedRow = () => {
@@ -43,7 +44,7 @@ const CSI = () => {
         const emailIndex = getColumnIndex("email");
         const departmentIndex = getColumnIndex("department");
         const yearIndex = getColumnIndex("year");
-        const rollNumberIndex = getColumnIndex("Roll Number");
+        const rollNumberIndex = getColumnIndex("Roll number");
         const verifiedIndex = getColumnIndex("verified");
 
         let lastProcessedRow = getLastProcessedRow();
@@ -86,7 +87,7 @@ const CSI = () => {
           year: entry.year,
           roll_number: entry.rollNumber,
           workshop_name: workshopName,
-          reply_to: "your_fest_email@example.com",
+          reply_to: "dbitcolosseum2025@gmail.com",
           qr_code: qrCodeUrl,
         };
 
@@ -104,22 +105,24 @@ const CSI = () => {
       const maxRowNumber = Math.max(...verifiedEntries.map((entry) => entry.rowIndex));
       setLastProcessedRow(maxRowNumber);
       console.log(`Updated last processed row to ${maxRowNumber}`);
+
+      // Display success message after sending all emails
+      setSuccessMessage("✅ Successfully registered all new entries!");
     }
   };
 
   return (
-    <div className="email-sender-container"> 
+    <div className="email-sender-container">
       <h2 className="email-sender-title">Upload CSV for {workshopName}</h2>
       <input type="file" accept=".csv" onChange={handleFileUpload} className="file-input" />
 
       {verifiedEntries.length > 0 && (
-        <button
-          onClick={sendBulkEmails}
-          className="send-button"
-        >
+        <button onClick={sendBulkEmails} className="send-button">
           Send Emails for {workshopName}
         </button>
       )}
+
+      {successMessage && <div className="success-message">{successMessage}</div>}
     </div>
   );
 };

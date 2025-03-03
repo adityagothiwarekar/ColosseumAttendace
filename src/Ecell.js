@@ -23,8 +23,7 @@ const Domain = () => {
         if (result.data.length < 2) return alert("CSV file has no valid data!");
 
         const headers = result.data[1];
-        const getColumnIndex = (name) =>
-          headers.findIndex((h) => h.toLowerCase().includes(name.toLowerCase()));
+        const getColumnIndex = (name) => headers.findIndex((h) => h.toLowerCase().includes(name.toLowerCase()));
 
         const formattedData = result.data.slice(2).map((row) => {
           return {
@@ -33,7 +32,7 @@ const Domain = () => {
             department: row[getColumnIndex("Member1 Department")] || "N/A",
             year: row[getColumnIndex("Member1 Year")] || "N/A",
             rollNumber: row[getColumnIndex("Member1 roll number")] || "N/A",
-            verified: row[getColumnIndex("verified")] || "N",
+            verified: row[getColumnIndex("Verified")] || "N",
             otherMembers: [2, 3, 4].map((i) => ({
               name: row[getColumnIndex(`Member${i} Name`)] || "N/A",
               department: row[getColumnIndex(`Member${i} Department`)] || "N/A",
@@ -43,36 +42,30 @@ const Domain = () => {
           };
         });
 
-        console.log("Last row index:", result.data.length - 1);
-
         const verifiedData = formattedData.filter(
           (entry) => entry.verified.toUpperCase() === "Y" && entry.email !== "N/A"
         );
 
         setEntries(formattedData);
         setVerifiedEntries(verifiedData);
+
+        setLastSetIndexEcell(parseInt(localStorage.getItem("lastSetIndexEcell")) || 0);
       },
     });
   };
 
   const generateQRCode = async (entry) => {
-    const qrData =
-      `Name: ${entry.name}\nEmail: ${entry.email}\nDepartment: ${entry.department}\nYear: ${entry.year}\nRoll Number: ${entry.rollNumber}\nEvent: ${workshopName}\n\nOther Members:\n` +
-      entry.otherMembers
-        .map(
-          (m, index) =>
-            `Member ${index + 2}: ${m.name}, ${m.email}, ${m.department}, ${m.year}, ${m.rollNumber}`
-        )
-        .join("\n");
+    const qrData = `Name: ${entry.name}\nEmail: ${entry.email}\nDepartment: ${entry.department}\nYear: ${entry.year}\nRoll Number: ${entry.rollNumber}\nEvent: ${workshopName}\n\nOther Members:\n` +
+      entry.otherMembers.map((m, index) => `Member ${index + 2}: ${m.name}, ${m.department}, ${m.year}, ${m.rollNumber}`).join("\n");
     return await QRCode.toDataURL(qrData);
   };
 
   const sendBulkEmails = async () => {
     let emailsSent = 0;
+    let currentIndex = lastSetIndexEcell;
 
     for (let i = lastSetIndexEcell; i < verifiedEntries.length; i++) {
       const entry = verifiedEntries[i];
-
       try {
         const qrCodeUrl = await generateQRCode(entry);
         const emailParams = {
@@ -89,15 +82,15 @@ const Domain = () => {
 
         await emailjs.send("service_rkj1v7l", "template_kpnpxfs", emailParams, "226oDfzd41tjisdP9");
         emailsSent++;
-
-        const newIndex = i + 1;
-        setLastSetIndexEcell(newIndex);
-        localStorage.setItem("lastSetIndexEcell", newIndex);
+        currentIndex = i + 1;
       } catch (error) {
         console.error(`❌ Failed to send email to ${entry.email}`, error);
+        break;
       }
     }
 
+    setLastSetIndexEcell(currentIndex);
+    localStorage.setItem("lastSetIndexEcell", currentIndex);
     setSuccessMessage(`${emailsSent} emails sent successfully!`);
   };
 
