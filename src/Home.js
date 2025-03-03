@@ -45,6 +45,9 @@ const Home = () => {
         <Link to="/asdeasdaPiyushwesdasd" className="workshop-button">
           Piyush Talk
         </Link>
+        <Link to="/asdeasdaIshraewesdasd" className="workshop-button">
+          Ishrae Talk
+        </Link>
         <Link to="/asadasaColoNiteasawad" className="workshop-button">
           Colo Nite
         </Link>

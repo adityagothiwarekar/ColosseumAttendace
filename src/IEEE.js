@@ -21,8 +21,8 @@ const IEEE = () => {
       complete: (result) => {
         if (result.data.length < 3) return alert("CSV file has no valid data!");
 
-        const headers = result.data[1]; // Start reading headers from row 2
-        console.log("Detected Headers:", headers);
+        const headers = result.data[1]; // Read headers from second row
+        console.log("📌 Detected Headers:", headers);
 
         const getColumnIndex = (name) =>
           headers.findIndex((h) => h.toLowerCase().includes(name.toLowerCase()));
@@ -46,11 +46,13 @@ const IEEE = () => {
           };
         });
 
-        console.log("Parsed Data:", formattedData);
+        console.log("✅ Parsed Data:", formattedData);
+
         const verifiedData = formattedData.filter(
           (entry) => entry.verified === "Y" && entry.email !== "N/A"
         );
-        console.log("Verified Entries:", verifiedData);
+
+        console.log("🔍 Verified Entries:", verifiedData);
 
         setEntries(formattedData);
         setVerifiedEntries(verifiedData);
@@ -60,20 +62,18 @@ const IEEE = () => {
 
   const generateQRCode = async (entry) => {
     const qrData = `Name: ${entry.name}\nEmail: ${entry.email}\nDepartment: ${entry.department}\nYear: ${entry.year}\nRoll Number: ${entry.rollNumber}\nEvent: ${workshopName}\n\nOther Members:\n` +
-      entry.otherMembers
-        .map((m, index) => `Member ${index + 2}: ${m.name}, ${m.department}, ${m.year}, ${m.rollNumber}`)
-        .join("\n");
+      entry.otherMembers.map((m, index) => `Member ${index + 2}: ${m.name}, ${m.department}, ${m.year}, ${m.rollNumber}`).join("\n");
     return await QRCode.toDataURL(qrData);
   };
 
   const sendBulkEmails = async () => {
     let emailsSent = 0;
+    let currentIndex = lastSentIndex;
+
     for (let i = lastSentIndex; i < verifiedEntries.length; i++) {
       const entry = verifiedEntries[i];
       try {
-        console.log(`📩 Sending email to: ${entry.email} (Name: ${entry.name})`);
         const qrCodeUrl = await generateQRCode(entry);
-
         const emailParams = {
           to_email: entry.email,
           to_name: entry.name,
@@ -86,40 +86,33 @@ const IEEE = () => {
           qr_code: qrCodeUrl,
         };
 
-        console.log("📨 Email Params:", emailParams);
-
-        const response = await emailjs.send(
-          "service_rkj1v7l",
-          "template_kpnpxfs",
-          emailParams,
-          "226oDfzd41tjisdP9"
-        );
-
-        console.log(`✅ Email sent to ${entry.email}:`, response);
+        await emailjs.send("service_rkj1v7l", "template_kpnpxfs", emailParams, "226oDfzd41tjisdP9");
         emailsSent++;
-        setLastSentIndex(i + 1);
-        localStorage.setItem("lastSentIndex", i + 1);
+        currentIndex = i + 1;
       } catch (error) {
         console.error(`❌ Failed to send email to ${entry.email}`, error);
+        break;
       }
     }
 
-    if (emailsSent > 0) {
-      setSuccessMessage(`${emailsSent} emails sent successfully!`);
-    } else {
-      console.warn("⚠️ No emails were sent. Check logs above for errors.");
-    }
+    setLastSentIndex(currentIndex);
+    localStorage.setItem("lastSentIndex", currentIndex);
+    setSuccessMessage(`${emailsSent} emails sent successfully!`);
   };
 
   return (
     <div className="email-sender-container">
       <h2 className="email-sender-title">Upload CSV for {workshopName}</h2>
       <input type="file" accept=".csv" onChange={handleFileUpload} className="file-input" />
+      
       {verifiedEntries.length > 0 && (
-        <button onClick={sendBulkEmails} className="send-button">
-          Send Emails for {workshopName}
-        </button>
+        <div>
+          <button onClick={sendBulkEmails} className="send-button">
+            Send Emails for {workshopName}
+          </button>
+        </div>
       )}
+
       {successMessage && <div className="success-message">{successMessage}</div>}
     </div>
   );
