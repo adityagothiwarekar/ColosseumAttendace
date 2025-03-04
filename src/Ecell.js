@@ -11,7 +11,7 @@ const Domain = () => {
   );
   const [successMessage, setSuccessMessage] = useState("");
 
-  const workshopName = "IEEE Workshop";
+  const workshopName = "ECell Workshop";
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
