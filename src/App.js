@@ -15,6 +15,7 @@ import VineetTalk from "./VineetTalk.js";
 import MayankTalk from "./MayankTalk.js";
 import PiyushTalk from "./Standup.js";
 import Ishrae from "./Ishrae.js";
+import Offlineregistrations from "./Offline_Registrations.js"; 
 // import ColoNite from "./ColoNite.js";
 
 const App = () => {
@@ -92,6 +93,7 @@ const App = () => {
             <Route path="/asdwVineetsd" element={<VineetTalk />} />
             <Route path="/asdeasdaPiyushwesdasd" element={<PiyushTalk />} />
             <Route path="/asdeasdaIshraewesdasd" element={<Ishrae />} />
+            <Route path="/offline" element={<Offlineregistrations />} />
             {/* <Route path="/asadasaColoNiteasawad" element={<ColoNite />} /> */}
           </Routes>
         </Router>

@@ -51,6 +51,9 @@ const Home = () => {
         <Link to="/asadasaColoNiteasawad" className="workshop-button">
           Colo Nite
         </Link>
+        <Link to="/offline" className="workshop-button">
+          offline registrations
+        </Link>
       </div>
     </div>
   );
